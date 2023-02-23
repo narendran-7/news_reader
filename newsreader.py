@@ -19,7 +19,7 @@ class Tamil:
         def __init__(self,frame):
             self.label1 = Label(frame, text='LANGUAGE',fg="#d91e18",bg="#95a5a6")
             self.label1.place(x=100, y=80)
-            data=("","English", "Arab", "Hindhi", "Japnesh")
+            data=("","English","Russia", "Arab", "Hindhi", "Japnesh")
             self.cb=Combobox(frame, values=data)
             self.cb.place(x=100, y=120)
             
@@ -29,6 +29,9 @@ class Tamil:
         def box(self):
             if self.cb.get() == "English":
                 print("--------------> ",self.cb.get())
+                caller.collection(str(self.cb.get()))
+            elif self.cb.get() == "Russia":
+                print(str(self.cb.get()))
                 caller.collection(str(self.cb.get()))
             elif self.cb.get() == "Arab":
                 print(str(self.cb.get()))
@@ -86,7 +89,21 @@ class Tamil:
                 # print("-------------> ",tmp.text.strip())
                 headList.append(tmp.text.strip()+';')
             
-            return headList      
+            return headList    
+
+        def russia(self):
+            url = 'https://rt.rs/'
+            resultObject = caller.HTML_Object(url)
+            tags = { "class":"Link-root" }
+            headList = []   
+            print(headList)
+            for tmp in resultObject.find_all("a",tags)[29:34]:
+                # print("-------------> ",tmp.text.strip())
+                headList.append(tmp.text.strip()+';')
+            
+            return headList 
+
+
             
         def ahram(self):
             tNews = 'http://www.ahram.org.eg/'
@@ -111,17 +128,19 @@ class Tamil:
                    }
             for tmp in resultObject.find_all('a', "c-articleModule__link")[:5]:
                  headList.append(tmp.span.text.strip()+';')
-            print(headList)
             return headList 
+
+
         def find_shorcut_language(self):
             if self.cb.get() == "English":
                 return "en"
+            elif self.cb.get() == "Russia":
+                return "ru"
             elif self.cb.get() == "Arab":
                 return "ar"
             elif self.cb.get() == "Hindhi":
                 return "hi"
             elif self.cb.get() == "Japnesh":
-                print("ja")
                 return "ja"
             
         # x is which language
@@ -131,7 +150,8 @@ class Tamil:
                   'Hindhi': caller.thehindu,
                   'English'  : caller.nytimes,
                   'Arab' : caller.ahram,
-                  'Japnesh': caller.japan
+                  'Japnesh': caller.japan,
+                  'Russia': caller.russia
                   }
            
             self.rest = select[x]()
