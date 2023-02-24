@@ -1,21 +1,21 @@
 import requests as req
 from bs4 import BeautifulSoup as bs
+from subprocess import call
 
+# call("start news.mp3 ", shell=True)
 
-url = "https://rt.rs/"
+url = "https://unita.news/"
 agent = {
             "UserAgent":"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:65.0) Gecko/20100101 Firefox/65.0"
         }
 requesting = req.get(url=url,headers=agent)
 contManu = requesting.content
-soupObject = bs(contManu, 'html.parser')
+resultObject = bs(contManu, 'html.parser')
 # print(soupObject)
-tags = {
-    "class":"Link-root"
-}
+tags = {"class":"news-title"}
 headLine = []
-for t in soupObject.find_all("a",tags)[29:34]:
-    print("-----> ",t.text.strip()+';')
+for t in resultObject.find_all("h3",tags)[:5] :
+    print("-----> ",t.a.text.strip()+';')
 
 
 # from textblob import TextBlob as tb
